@@ -1,5 +1,9 @@
 FROM python:3.6.4
 
+RUN mkdir ~/.pip && \
+    cd ~/.pip/  && \
+    echo "[global] \ntrusted-host=mirrors.aliyun.com \nindex-url=http://mirrors.aliyun.com/pypi/simple/" >  pip.conf
+
 # set working directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
