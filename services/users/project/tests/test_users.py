@@ -25,7 +25,7 @@ class TestUserService(BaseTestCase):
         content_type = 'application/json',
       )
       data = json.loads(response.data.decode())
-      self.assertEqual(response.status.code, 201)
+      self.assertEqual(response.status_code, 201)
       self.assertIn('test@test.com was added!', data['message'])
       self.assertIn('success', data['status'])
 
