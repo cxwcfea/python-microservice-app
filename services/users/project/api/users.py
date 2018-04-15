@@ -42,7 +42,7 @@ def add_user():
 @users_blueprint.route('/users/<user_id>', methods=['GET'])
 def get_single_user(user_id):
   response_object = {
-    'status': 'success',
+    'status': 'fail',
     'message': 'User does not exist'
   }
   try:
