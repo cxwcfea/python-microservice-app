@@ -5,6 +5,12 @@ from project.tests.base import BaseTestCase
 from project import db
 from project.api.models import User
 
+def add_user(username, email):
+  user = User(username=username, email=email)
+  db.session.add(user)
+  db.session.commit()
+  return user
+
 class TestUserService(BaseTestCase):
   """Test for the Users Service."""
 
@@ -67,9 +73,7 @@ class TestUserService(BaseTestCase):
       self.assertIn('fail', data['status'])
 
   def test_single_user(self):
-    user = User(username='michael', email='test@test.com')
-    db.session.add(user)
-    db.session.commit()
+    user = add_user('michael', 'test@test.com')
     with self.client:
       response = self.client.get(f'/users/{user.id}')
       data = json.loads(response.data.decode())
@@ -93,6 +97,20 @@ class TestUserService(BaseTestCase):
       self.assertEqual(response.status_code, 404)
       self.assertIn('User does not exist', data['message'])
       self.assertIn('fail', data['status'])
+
+  def test_all_users(self):
+    user = add_user('michael', 'test@test.com')
+    user = add_user('fletcher', 'test1@test.com')
+    with self.client:
+      response = self.client.get('/users')
+      data = json.loads(response.data.decode())
+      self.assertEqual(response.status_code, 200)
+      self.assertEqual(len(data['data']['users']), 2)
+      self.assertIn('michael', data['data']['users'][0]['username'])
+      self.assertIn('test@test.com', data['data']['users'][0]['email'])
+      self.assertIn('fletcher', data['data']['users'][1]['username'])
+      self.assertIn('test1@test.com', data['data']['users'][1]['email'])
+      self.assertIn('success', data['status'])
 
 if __name__ == '__main__':
   unittest.main()
