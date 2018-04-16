@@ -112,5 +112,22 @@ class TestUserService(BaseTestCase):
       self.assertIn('test1@test.com', data['data']['users'][1]['email'])
       self.assertIn('success', data['status'])
 
+  def test_main_no_users(self):
+    response = self.client.get('/')
+    self.assertEqual(response.status_code, 200)
+    self.assertIn(b'<h1>All users</h1>', response.data)
+    self.assertIn(b'<p>No users!</p>', response.data)
+
+  def test_main_with_users(self):
+    add_user('michael', 'michael@test.com')
+    add_user('fletcher', 'fletcher@test.com')
+    with self.client:
+      response = self.client.get('/')
+      self.assertEqual(response.status_code, 200)
+      self.assertIn(b'<h1>All users</h1>', response.data)
+      self.assertNotIn(b'<p>No users!</p>', response.data)
+      self.assertIn(b'michael', response.data)
+      self.assertIn(b'fletcher', response.data)
+
 if __name__ == '__main__':
   unittest.main()
