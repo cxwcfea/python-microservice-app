@@ -129,5 +129,17 @@ class TestUserService(BaseTestCase):
       self.assertIn(b'michael', response.data)
       self.assertIn(b'fletcher', response.data)
 
+  def test_main_add_user(self):
+    with self.client:
+      response = self.client.post(
+        '/',
+        data=dict(username='michael', email='michael@test.com'),
+        follow_redirects=True
+      )
+      self.assertEqual(response.status_code, 200)
+      self.assertIn(b'<h1>All Users</h1>', response.data)
+      self.assertNotIn(b'<p>No users!</p>', response.data)
+      self.assertIn(b'michael', response.data)
+
 if __name__ == '__main__':
   unittest.main()
