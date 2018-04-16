@@ -48,5 +48,6 @@ class TestProductionConfig(TestCase):
     self.assertTrue(app.config['SECRET_KEY'] == 'my_precious')
     self.assertFalse(app.config['TESTING'])
 
+
 if __name__ == '__main__':
   unittest.main()
