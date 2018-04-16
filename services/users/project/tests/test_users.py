@@ -26,11 +26,11 @@ class TestUserService(BaseTestCase):
     with self.client:
       response = self.client.post(
         '/users',
-        data = json.dumps({
+        data=json.dumps({
           'username': 'michael',
           'email': 'test@test.com'
         }),
-        content_type = 'application/json',
+        content_type='application/json',
       )
       data = json.loads(response.data.decode())
       self.assertEqual(response.status_code, 201)
@@ -41,8 +41,8 @@ class TestUserService(BaseTestCase):
     with self.client:
       response = self.client.post(
         '/users',
-        data = json.dumps({}),
-        content_type = 'application/json',
+        data=json.dumps({}),
+        content_type='application/json',
       )
       data = json.loads(response.data.decode())
       self.assertEqual(response.status_code, 400)
@@ -53,19 +53,19 @@ class TestUserService(BaseTestCase):
     with self.client:
       response = self.client.post(
         '/users',
-        data = json.dumps({
+        data=json.dumps({
           'username': 'michael',
           'email': 'test@test.com'
         }),
-        content_type = 'application/json',
+        content_type='application/json',
       )
       response = self.client.post(
         '/users',
-        data = json.dumps({
+        data=json.dumps({
           'username': 'michael',
           'email': 'test@test.com'
         }),
-        content_type = 'application/json',
+        content_type='application/json',
       )
       data = json.loads(response.data.decode())
       self.assertEqual(response.status_code, 400)
@@ -99,8 +99,8 @@ class TestUserService(BaseTestCase):
       self.assertIn('fail', data['status'])
 
   def test_all_users(self):
-    user = add_user('michael', 'test@test.com')
-    user = add_user('fletcher', 'test1@test.com')
+    add_user('michael', 'test@test.com')
+    add_user('fletcher', 'test1@test.com')
     with self.client:
       response = self.client.get('/users')
       data = json.loads(response.data.decode())
@@ -140,6 +140,7 @@ class TestUserService(BaseTestCase):
       self.assertIn(b'<h1>All Users</h1>', response.data)
       self.assertNotIn(b'<p>No users!</p>', response.data)
       self.assertIn(b'michael', response.data)
+
 
 if __name__ == '__main__':
   unittest.main()
