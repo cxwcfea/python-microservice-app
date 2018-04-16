@@ -115,7 +115,7 @@ class TestUserService(BaseTestCase):
   def test_main_no_users(self):
     response = self.client.get('/')
     self.assertEqual(response.status_code, 200)
-    self.assertIn(b'<h1>All users</h1>', response.data)
+    self.assertIn(b'<h1>All Users</h1>', response.data)
     self.assertIn(b'<p>No users!</p>', response.data)
 
   def test_main_with_users(self):
@@ -124,7 +124,7 @@ class TestUserService(BaseTestCase):
     with self.client:
       response = self.client.get('/')
       self.assertEqual(response.status_code, 200)
-      self.assertIn(b'<h1>All users</h1>', response.data)
+      self.assertIn(b'<h1>All Users</h1>', response.data)
       self.assertNotIn(b'<p>No users!</p>', response.data)
       self.assertIn(b'michael', response.data)
       self.assertIn(b'fletcher', response.data)
