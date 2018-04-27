@@ -3,16 +3,24 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import registerServiceWorker from './registerServiceWorker';
+import UsersList from './components/UsersList';
 
 class App extends Component {
-  constructor() {
-    super();
+  state = {
+    users: [],
+  }
+
+  componentDidMount() {
     this.getUsers();
   }
 
   getUsers() {
     axios.get(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`)
-      .then((res) => { console.log(res); })
+      .then((res) => {
+        this.setState({
+          users: res.data.data.users,
+        });
+      })
       .catch((err) => { console.log(err); });
   }
 
@@ -24,6 +32,7 @@ class App extends Component {
             <br/>
             <h1>All Users</h1>
             <hr/><br/>
+            <UsersList users={this.state.users}/>
           </div>
         </div>
       </div>
