@@ -9,8 +9,8 @@ services:
       dockerfile: Dockerfile-dev
     volumes:
       - './services/users:/usr/src/app'
-    expose:
-      - '5000'
+    ports:
+      - 5001:5000
     environment:
       - FLASK_DEBUG=1
       - APP_SETTINGS=project.config.DevelopmentConfig
@@ -55,7 +55,7 @@ services:
     build: ./services/nginx
     restart: always
     ports:
-      - 5001:80
+      - 3001:80
     depends_on:
       - users
       - client
