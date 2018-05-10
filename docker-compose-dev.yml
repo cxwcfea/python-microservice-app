@@ -50,3 +50,13 @@ services:
     links:
       - users
 
+  nginx:
+    container_name: nginx
+    build: ./services/nginx
+    restart: always
+    ports:
+      - 5001:80
+    depends_on:
+      - users
+      - client
+
